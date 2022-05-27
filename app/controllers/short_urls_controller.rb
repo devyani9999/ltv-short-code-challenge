@@ -16,11 +16,24 @@ class ShortUrlsController < ApplicationController
   end
 
   def show
+    short_code = permitted_params_for_show['id']
+    id = ShortUrl.id_from_short_code(short_code)
+    begin
+      short_url = ShortUrl.find(id)
+      short_url.increment!(:click_count)
+      redirect_to short_url.full_url
+    rescue
+      render json: {}, status: 404
+    end
   end
 
   private
 
   def permitted_params_for_create
     params.permit(:full_url)
+  end
+
+  def permitted_params_for_show
+    params.permit(:id)
   end
 end
