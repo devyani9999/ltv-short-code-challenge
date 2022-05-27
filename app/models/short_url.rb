@@ -46,6 +46,11 @@ class ShortUrl < ApplicationRecord
   def update_title!
   end
 
+  #could use it in as_json
+  def public_attributes
+    self.attributes.slice('full_url', 'title', 'click_count', 'short_code')
+  end
+
   private
 
   def validate_full_url
