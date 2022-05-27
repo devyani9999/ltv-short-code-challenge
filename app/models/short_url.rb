@@ -44,6 +44,8 @@ class ShortUrl < ApplicationRecord
   end
 
   def update_title!
+    UpdateTitleJob.perform_now(self.id)
+    self.reload
   end
 
   #could use it in as_json
